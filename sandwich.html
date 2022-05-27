@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sandwich Clicker</title>
+
+    <style>
+        p {
+            font-family: sans-serif;
+        };
+
+        .buyLoafDiv {
+            border: 5px outset brown;
+            background-color: aliceblue;
+        };
+    </style>
+</head>
+<body>
+
+    <img id="clickSandwich" width=709 height=709 src="sandwich_image.png">
+
+    <p id="NOSdisplay" style="font-size: 800%;"></p>
+
+    <p id="SPSdisplay" style="font-size: 400%;"></p>
+
+    <button type="button" onclick="Game.EL()">Buy Loaf (15)</button>
+
+    <button type="button" onclick="Game.E10Loaf()">Buy 10 Loaves (150)</button>
+
+    <button type="button" onclick="Game.E100Loaf()">Buy 100 Loaves (1500)</button>
+
+    <h1>Settings</h1>
+
+    <button type="button" onclick="saveData()">Save Data</button>
+
+    <button type="button" onclick="deleteData()">Delete Data</button>
+
+    <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+
+    <script> // Object setup.
+
+        var Game = {
+            sandwiches: {},
+            SPS: {},
+        };
+
+    </script>
+
+    <script> // Variable setup.
+
+        var numberOfSandwiches = 0;
+
+        var sandwichesPerSecond = 0;
+
+        var ownedNumber = 0;
+
+        var loafNumber = 0;
+
+    </script>
+
+    <script> // Update function.
+
+        Game.update = function () {
+            $("#NOSdisplay").text(numberOfSandwiches + " sandwiches");
+            $("#SPSdisplay").text(sandwichesPerSecond + " sandwiches per second");
+        };
+
+    </script>
+
+    <script> // Sandwich click function.
+
+        $("#clickSandwich").click(function (event) {
+            numberOfSandwiches++;
+            Game.update();
+        });
+
+    </script>
+
+    <script> // Loaf purchase functions.
+
+        Game.EL = function () {
+            if (numberOfSandwiches > 14) {
+                numberOfSandwiches -= 15;
+                loafNumber++;
+                sandwichesPerSecond += 0.5;
+                Game.update();
+            };
+        };
+
+        Game.E10Loaf = function () {
+            for (var i = 0; i < 10; i++) {
+                Game.EL();
+            };
+        };
+
+        Game.E100Loaf = function () {
+            for (var i = 0; i < 10; i++) {
+                Game.e10Loaf();
+            };
+        };
+
+    </script>
+
+    <script> // Increment function.
+
+        Game.SPSincr = function () {
+            if (loafNumber > 0) {
+                numberOfSandwiches += sandwichesPerSecond;
+                Game.update();
+            };
+        };
+
+    </script>
+
+    <script> // Data management.
+
+        Game.saveData = function () {
+            localStorage.NOS = numberOfSandwiches;
+            localStorage.SPS = sandwichesPerSecond;
+            localStorage.LN = loafNumber;
+        };
+
+        function deleteData () {
+            if (confirm("Are you sure?")) {
+                if (confirm("Are you really, really, sure?")) {
+                    numberOfSandwiches = 0;
+                    sandwichesPerSecond = 0;
+                    loafNumber = 0;
+                    Game.update();
+                    localStorage.clear();
+                };
+            };
+        };
+
+    </script>
+
+    <script> // Debug tools.
+
+        Game.earn = function (amount) {
+            numberOfSandwiches += amount;
+            Game.update();
+        };
+
+        Game.earnSPS = function (amount) {
+            sandwichesPerSecond += amount;
+            Game.update();
+        };
+
+    </script>
+
+    <script> // Runs the game.
+
+        setInterval(Game.SPSincr(), 1000);
+
+        Game.update();
+
+    </script>
+
+</body>
+</html>
