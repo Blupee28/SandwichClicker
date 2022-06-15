@@ -1,3 +1,0 @@
-// Object setup.
-
-var Game = {};
