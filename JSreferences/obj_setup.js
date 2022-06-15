@@ -1,0 +1,3 @@
+// Object setup.
+
+var Game = {};
